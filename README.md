@@ -1,63 +1,54 @@
-Kinect Depth and Color Frame Viewer
-This project is a basic C++ application that interfaces with a Kinect sensor to acquire depth and color frames, map the depth data to the color space, and visualize the result. It demonstrates Kinect sensor initialization, frame reading, coordinate mapping, and buffer management.
+# Kinect Frame Mapping Application
 
-Features
-Initializes Kinect v2 sensor and required frame readers.
+This project is a simple C++ application that interfaces with a Kinect v2 sensor to acquire depth and color frames, map depth data to the color space, and visualize it. The application initializes the Kinect, reads frame data, processes it, and handles cleanup.
 
-Captures depth and color frames.
+## Features
 
-Maps depth data to color space using the coordinate mapper.
+- Initializes Kinect v2 sensor.
+- Reads and processes depth and color frames.
+- Maps depth data to the corresponding color pixels.
+- Simple buffer-based visualization.
+- Error handling with debug print statements.
 
-Visualizes mapped color data for each depth pixel.
+## Requirements
 
-Manages memory and resource cleanup gracefully.
+- **Windows OS**
+- **Kinect for Windows SDK v2.0**
+- **C++11 or later**
+- Visual Studio (or another Windows C++ compiler)
 
-Dependencies
-Kinect for Windows SDK 2.0
+## Code Overview
 
-C++11 or later
+### `App::Init()`
+Initializes the Kinect sensor and sets up the necessary frame readers and buffers:
 
-Windows platform
+- Connects to the default Kinect sensor.
+- Retrieves depth and color frame sources and readers.
+- Allocates memory for depth, color, and mapped pixel buffers.
+- Gets a coordinate mapper to transform depth to color space.
 
-File Overview
-app.h
-Header file for the App class (not included here but expected to contain declarations for methods like Init, Tick, and Shutdown, as well as necessary member variables).
+### `App::Tick(float deltaTime)`
+Main update loop (called per frame):
 
-app.cpp
-Main implementation of the App class:
+- Acquires the latest depth and color frames.
+- Copies frame data into local buffers.
+- Maps each depth point to its corresponding color space point.
+- Populates a display buffer, coloring invalid points red.
 
-Init(): Initializes the Kinect sensor, sets up readers for depth and color streams, and allocates memory buffers.
+### `App::Shutdown()`
+Cleans up all allocated resources:
 
-Tick(float deltaTime): Called every frame to:
+- Releases readers and sensor handles.
+- Frees dynamically allocated buffers.
 
-Acquire the latest depth and color frames.
+## How to Build
 
-Map depth pixels to corresponding color pixels.
+1. Install **Kinect for Windows SDK v2.0**.
+2. Open the project in Visual Studio.
+3. Link against Kinect20.lib and include the SDK headers.
+4. Compile and run with Kinect connected.
 
-Populate a visual buffer for rendering.
+## Example Output
 
-Shutdown(): Releases resources and deallocates memory.
-
-Usage
-Build the Project
-
-Make sure the Kinect SDK is installed and the library paths are configured in your project.
-
-Build using Visual Studio or a compatible C++ toolchain.
-
-Run the App
-
-Connect a Kinect v2 sensor.
-
-Run the application. It will print log messages and handle frame copying each frame.
-
-Notes
-Frame resolution is hardcoded (1920x1080 for color, variable for depth depending on Kinect spec).
-
-Depth data is visually replaced with the corresponding color data where valid, and colored red where mapping is invalid.
-
-Includes minimal error handling and diagnostic printing.
-
-License
-This project is for educational or prototyping use. No formal license is provided.
+During execution, console output will indicate frame capture progress:
 
